@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schulschluss Countdown</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 40px;
+        }
+        .countdown {
+            font-size: 5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schulschluss Countdown</h1>
+    <div class="countdown" id="countdown">--:--:--</div>
+
+    <script>
+        // Schulschlusszeiten
+        const endTimes = {
+            1: { hours: 15, minutes: 30 }, // Montag
+            2: { hours: 15, minutes: 30 }, // Dienstag
+            3: { hours: 14, minutes: 0 },  // Mittwoch
+            4: { hours: 15, minutes: 30 }, // Donnerstag
+            5: { hours: 14, minutes: 0 },  // Freitag
+            6: null, // Samstag - kein Schultag
+            0: null  // Sonntag - kein Schultag
+        };
+
+        // Update-Funktion
+        function updateClock() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sonntag, 1 = Montag, etc.
+            
+            const countdownElem = document.getElementById('countdown');
+            
+            // Prüfen, ob heute Schultag ist
+            if (endTimes[day] === null) {
+                countdownElem.textContent = "Kein Schultag";
+                return;
+            }
+            
+            // Schulschlusszeit für heute
+            const endTimeHours = endTimes[day].hours;
+            const endTimeMinutes = endTimes[day].minutes;
+            
+            // Schulschlusszeit für heute als Date-Objekt erstellen
+            const endTime = new Date();
+            endTime.setHours(endTimeHours, endTimeMinutes, 0, 0);
+            
+            // Prüfen, ob der Schulschluss bereits vorbei ist
+            if (now > endTime) {
+                countdownElem.textContent = "Schulschluss";
+                return;
+            }
+            
+            // Differenz berechnen
+            const diff = endTime - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Countdown anzeigen
+            countdownElem.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Sofort aktualisieren und dann jede Sekunde
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
