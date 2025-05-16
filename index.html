@@ -31,7 +31,7 @@
     <div class="countdown" id="countdown">--:--:--</div>
 
     <script>
-        // Schulschlusszeiten
+
         const endTimes = {
             1: { hours: 15, minutes: 30 }, // Montag
             2: { hours: 15, minutes: 30 }, // Dienstag
@@ -42,7 +42,7 @@
             0: null  // Sonntag - kein Schultag
         };
 
-        // Update-Funktion
+
         function updateClock() {
             const now = new Date();
             const day = now.getDay(); // 0 = Sonntag, 1 = Montag, etc.
